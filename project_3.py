@@ -3,7 +3,6 @@ import math
 import random
 # Do NOT alter the import list!!!!
 
-
 class Project3:
 
     def __init__(self):
@@ -27,7 +26,6 @@ class Project3:
         return d
 
     def task_1(self, n_str: str, d_str: str, c_str: str):
-        # TODO: Implement this method for Task 1
         n = int(n_str, 16)
         d = int(d_str, 16)
         c = int(c_str, 16)
@@ -36,8 +34,6 @@ class Project3:
         return hex(m).rstrip('L')
 
     def task_2(self, password_hash: str):
-        # TODO: Implement this method for Task 2
-
         # The password list is prepopulated for your convenience
         common_password_list = ['123456', '12345', '123456789', 'password', 'iloveyou', 'princess', '1234567', 'rockyou', '12345678',
                                 'abc123', 'nicole', 'daniel', 'babygirl', 'monkey', 'lovely', 'jessica', '654321', 'michael', 'ashley',
@@ -142,10 +138,16 @@ class Project3:
                                 'andre', 'donald', 'daniel1', 'panther', 'dinamo', 'mommy', 'juliana', 'cassandra']
 
         password = common_password_list[0]
+
         # This is how you get the SHA-256 hash:
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-        return password
+        # Check each name in the list until the hashed password matches the passed password hash
+        for x in range(len(common_password_list)):
+            password = common_password_list[x]
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            if password_hash == hashed_password:
+                return password
 
     def task_3(self, user_id_1: str, user_id_2: str, amount: int, prev_block_hash: str):
         # TODO: Implement this method for Task 3

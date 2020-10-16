@@ -14,9 +14,17 @@ class TestProject3(unittest.TestCase):
                                   '0x7ee9127facd9381ceac3abcc4e5b6109eced930a683aa465e8b8dcc46b2b2ea78b3f4142d40a57cb6536700b04ebedc1817de38845b700c249def436c21da3538e56955f694ff02616138f05dde077cf6f18be27ad84ce4576e3e4c5691c0f6cb46f5519e007f0be70cec37fbec652b52c881c3a3d19e5857b92ba6e772442f')
         self.assertEqual(m, '0x74aeb7579d4061e3ba54f02b2eea47c1')
 
-    def test_task_2(self):
+    def test_task_2_1(self): # checking first index of list
         password = self.project_3.task_2('0bcf62b62f026b799d6245fc98591b58f6428db3a828303791f135360461d4ca')
         self.assertEqual(password, 'bryan')
+    
+    def test_task_2_2(self): # checking a middle index of list
+        password = self.project_3.task_2('8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92')
+        self.assertEqual(password, '123456')
+        
+    def test_task_2_3(self): # checking last index of list
+        password = self.project_3.task_2('f1c6127b16ff422bfa09b98334abe44c5f88327e2a2185a2fe00ce26cdcf0075')
+        self.assertEqual(password, 'cassandra')
 
     def test_task_3(self):
         nonce = self.project_3.task_3('dolores', 'satoshi', 4590387, 'ad1a53f6aeacaafa9a66a7c33cb336c7c6a866467883960ad5731db2d6aeae8c')
