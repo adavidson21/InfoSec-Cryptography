@@ -30,7 +30,6 @@ class Project3:
         d = int(d_str, 16)
         c = int(c_str, 16)
         m = pow(c,d,n) # function: pow(base, exponent, modulus) ref: https://www.w3schools.com/python/ref_func_pow.asp
-
         return hex(m).rstrip('L')
 
     def task_2(self, password_hash: str):
@@ -137,15 +136,10 @@ class Project3:
                                 'simone', 'nursing', 'iloveyou!', 'eugene', 'torres', 'damian', '123123123', 'joshua1', 'bobby', 'babyface',
                                 'andre', 'donald', 'daniel1', 'panther', 'dinamo', 'mommy', 'juliana', 'cassandra']
 
-        password = common_password_list[0]
-
-        # This is how you get the SHA-256 hash:
-        hashed_password = hashlib.sha256(password.encode()).hexdigest()
-
-        # Check each name in the list until the hashed password matches the passed password hash
+        # Check each password in the list until the hashed password from the list matches the passed password hash
         for x in range(len(common_password_list)):
             password = common_password_list[x]
-            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            hashed_password = hashlib.sha256(password.encode()).hexdigest() # Gets the SHA256 hash
             if password_hash == hashed_password:
                 return password
 
