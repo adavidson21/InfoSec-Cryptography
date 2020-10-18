@@ -144,10 +144,14 @@ class Project3:
                 return password
 
     def task_3(self, user_id_1: str, user_id_2: str, amount: int, prev_block_hash: str):
-        # TODO: Implement this method for Task 3
-        nonce = 0
-
-        return nonce
+        nonce = 0 # initializing the nonce as 0, to be incremented.
+        end_hash = user_id_1 + ":" + user_id_2 + ":" + str(amount) + prev_block_hash # the static end of the string to be hashed
+        hash = hashlib.sha256((str(nonce) + end_hash).encode()).hexdigest() # initializes the hash with nonce = 0 + transaction string + previous block hash
+        
+        while (hash[:2] != "00"): # if the proof of work is not 00, then we have not found the nonce value
+            nonce += 1 
+            hash = hashlib.sha256((str(nonce) + end_hash).encode()).hexdigest() # recalculate the hash with the new nonce value
+        return nonce # if we get here, the lowest possible nonce value has been found
 
     def task_4(self, n_str: str, e_str: str):
         n = int(n_str, 16)
