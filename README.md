@@ -79,7 +79,14 @@ The function `task_3` works as follows:
 4. The function will loop through each nonce value, starting at zero, until the correct `nonce` is found, which at that point it will simply return that correct nonce value.
     - `nonce` is determined to be correct when the hash string that it is included in has "00" as the first two characters.
 
-## Task 4 -
+## Task 4 - Attack A Small Key Space
+
+### Prompt:
+
+The algorithm you search for is dirt simple which makes it hard for attackers to traverse the entire key space with limited resources. Now, you’re given a unique RSA public key with a relatively small key size (6​ 4 bits)​.
+
+Your goal is to get the private key.
+
 
 ## Task 5 -
 

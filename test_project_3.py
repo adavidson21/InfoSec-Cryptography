@@ -32,7 +32,10 @@ class TestProject3(unittest.TestCase):
 
     def test_task_4(self):
         d = self.project_3.task_4('0xcd6290ea76c25b9', '0x10001')
-        self.assertEqual(d, '0x15abb7c3f3f39ad')
+        #self.assertEqual(d, '0x15abb7c3f3f39ad')
+
+        d = self.project_3.get_factors(4)
+        # return d
 
     def test_task_5(self):
         public_key_list = [
