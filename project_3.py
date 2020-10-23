@@ -13,6 +13,21 @@ class Project3:
     # TODO: OPTIONAL - Add helper methods below
     # BEGIN HELPER METHODS
 
+    def trial_division_factors(self, n:int): #shouldn't be used, saving for now
+        # the most basic (and inefficient way) to find the prime factors of a number.
+        p = 0
+        q = 0
+        n = 14789166241
+        for x in range(math.ceil(math.sqrt(n)),2,-1): #reverse order, since p is probably large.
+            if n % x == 0:
+                p = n/x
+                q = n/p
+                break
+        return p, q
+    
+    def f(self, a:int, n:int):
+        return (a**2 + a) % n
+ 
     # END HELPER METHODS
 
     def get_factors(self, n: int):
@@ -25,17 +40,20 @@ class Project3:
         # Dec​ - To decrypt cipher integer c with private key d, the plain integer m ≡ c d mod N .
 
         # Goal - factor n to get p, then use that to find q
-        # ref: https://www.doc.ic.ac.uk/~mrh/330tutor/ch05s02.html#:~:text=The%20general%20formula%20to%20compute,%2D%201%2Fpn).
-        # ref: https://crypto.stackexchange.com/questions/5715/phipq-p-1-q-1
+        # ref: https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
         p = 0
         q = 0
-        n = 8170483653609770429
-        for x in range(math.ceil(math.sqrt(n)),2,-1): #reverse order, since p is probably large.
-            if n % x == 0:
-                p = n/x
+        a = 0
+        b = 2
+        n = 51923
+        while b != a:
+            a = random.randint(1, 100)
+            a = self.f(a,n)
+            b = self.f(self.f(b,n), n)
+            p = math.gcd(abs(b-a), n)
+            if (p > 1):
                 q = n/p
-                break
-        return p, q
+                return p,q
 
     def get_private_key_from_p_q_e(self, p: int, q: int, e: int):
         # TODO: Implement this method for Task 4, Step 2
