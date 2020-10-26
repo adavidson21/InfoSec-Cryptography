@@ -8,20 +8,7 @@ class Project3:
     def __init__(self):
         pass
 
-    # TODO: OPTIONAL - Add helper methods below
     # BEGIN HELPER METHODS
-
-    def trial_division_factors(self, n:int): #shouldn't be used, saving for now
-        # the most basic (and inefficient way) to find the prime factors of a number.
-        p = 0
-        q = 0
-        n = 14789166241
-        for x in range(math.ceil(math.sqrt(n)),2,-1): #reverse order, since p is probably large.
-            if n % x == 0:
-                p = n/x
-                q = n/p
-                break
-        return p, q
  
     def integralPowerOf2(self, z:int): # for Brent's Factorization implementation 
         pow2 = 1
