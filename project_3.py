@@ -1,8 +1,6 @@
 import hashlib
 import math
 import random
-
-
 # Do NOT alter the import list!!!!
 
 class Project3:
@@ -24,36 +22,30 @@ class Project3:
                 q = n/p
                 break
         return p, q
-    
-    def f(self, a:int, n:int):
-        return (a**2 + a) % n
  
+    def integralPowerOf2(self, z:int): # for Brent's Factorization implementation 
+        pow2 = 1
+        while pow2 <= z:
+            if pow2 == z:
+                return True
+            pow2 = pow2*2
     # END HELPER METHODS
 
     def get_factors(self, n: int):
-        # 2. Let N = p∗q, and φ(N) = (p−1)∗(q−1).
-        # 3. Pickup an integer e, such that 1 < e < φ(N) and gcd(e, φ(N)) = 1.
-        # 4. Get the modular inverse of e : d ≡ e−1 mod φ(N) (i.e., d∗e ≡ 1 mod φ(N)).
-        # 5. Return (N , e) as public key, and d as private key.
-
-        # Enc -​ To encrypt integer m with public key (N, e) , the cipher integer c ≡ m e mod N . 
-        # Dec​ - To decrypt cipher integer c with private key d, the plain integer m ≡ c d mod N .
-
-        # Goal - factor n to get p, then use that to find q
-        # ref: https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
+        # Brent's Factorization Method ref: http://connellybarnes.com/documents/factoring.pdf
         p = 0
         q = 0
-        a = 0
-        b = 2
-        n = 51923
-        while b != a:
-            a = random.randint(1, 100)
-            a = self.f(a,n)
-            b = self.f(self.f(b,n), n)
-            p = math.gcd(abs(b-a), n)
-            if (p > 1):
-                q = n/p
+        xi = 2
+        xm = 2
+        for i in range(1, math.floor(math.sqrt(n))):
+            xi = ((xi ** 2)+1)% n
+            s = math.gcd((xi - xm), n)
+            if s != 1 and s != n:
+                p = s
+                q = n/s
                 return p,q
+            if self.integralPowerOf2(i):
+                xm = xi
 
     def get_private_key_from_p_q_e(self, p: int, q: int, e: int):
         # TODO: Implement this method for Task 4, Step 2
