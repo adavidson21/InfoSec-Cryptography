@@ -109,16 +109,17 @@ The function `task_4` works as follows:
 
 2. The function `get_factors` is executed, and returns the value of `p` and `q`, the two prime factors of `n`. 
 
+     - The function utilizes **[Brent's Factorization Algorithm](http://connellybarnes.com/documents/factoring.pdf)**. Brent's Factorizaion Algorithm is a variation of **[Pollard Rho's Factorization method](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm)**, where the calculation is more efficient, due to the detection of periodicity. 
+
+     - `get_factors` also uses the function `integral_power_of_2` in order to speed up the prime factorization algorithm. What this function does is detect if the index that is currently being checked is a power of 2. If so, then it sets x = y.
+
 3. The function `get_private_key_from_p_q_e` is executed, and returns the value of `d`, the private key.
 
-The function `get_factors` that is used in Step 2 of the `task_4` function utilizes **[Brent's Factorization Algorithm](http://connellybarnes.com/documents/factoring.pdf)**. Brent's Factorizaion Algorithm is a variation of **[Pollard Rho's Factorization method](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm)**, where the calculation is more efficient, due to the detection of periodicity. 
+    - `get_private_key_from_p_q_e` uses the factors `p` and `q` that were found using `get_factors` in Step 2, in order to calculate the private key. 
 
-`get_factors` also uses the function `integral_power_of_2` in order to speed up the prime factorization algorithm. What this function does is detect if the index that is currently being checked is a power of 2. If so, then it sets x = y.
+        - We are able to calculate φ(N) (denoted as `phi`) by calculating `(p−1) x (q−1)`. Once we have that value, the function `ext_euclid` is used to find the modular multiplicative inverse using the [Extended Euclidean Algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm). 
 
-In Step 3, the function `get_private_key_from_p_q_e` uses the factors `p` and `q` that were found using `get_factors` in Step 2, in order to calculate the private key. 
-
-We are able to calculate φ(N) (denoted as `phi`) by calculating `(p−1) x (q−1)`. Once we have that value, the function `ext_euclid` is used to find the modular multiplicative inverse using the [Extended Euclidean Algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm). 
-
+4. The private key, `d`, is converted to hex (with trailing 'L' removed). 
 
 ## Task 5 - Where’s Waldo
 
