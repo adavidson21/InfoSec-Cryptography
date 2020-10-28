@@ -10,13 +10,12 @@ class Project3:
         pass
 
     # BEGIN HELPER METHODS
-
-    def integralPowerOf2(self, z: int):  # for Brent's Factorization implementation
-        pow2 = 1
-        while pow2 <= z:
-            if pow2 == z:
+    def integral_power_of_2(self, z: int):  # for Brent's Factorization implementation
+        power = 1
+        while power <= z:
+            if power == z:
                 return True
-            pow2 = pow2*2
+            power = power * 2
 
     def set_new_values_euclid(self, old, quotient, new): # for Extended Euclidean Algorithm
         # Takes care of the assignments and the actual calculation for ext_euclid()
@@ -30,15 +29,14 @@ class Project3:
         # https://crypto.stackexchange.com/questions/5889/calculating-rsa-private-exponent-when-given-public-exponent-and-the-modulus-fact
         # Referenced pseudocode from: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
 
+        old_x = old_y = 1
+        x = y = 0
         original_phi = phi
         old_remainder = e
         remainder = phi
-        old_x = old_y = 1
-        x = y = 0
 
         while remainder != 0:
             quotient = old_remainder // remainder # floor division to retain integer
-
             remainder, old_remainder = self.set_new_values_euclid(old_remainder, quotient, remainder)
             x, old_x = self.set_new_values_euclid(old_x, quotient, x)
             y, old_y = self.set_new_values_euclid(old_y, quotient, y)
@@ -53,18 +51,18 @@ class Project3:
 
     def get_factors(self, n: int):
         # Brent's Factorization Method - Ref: http://connellybarnes.com/documents/factoring.pdf
-        xi = xm = 2
+        x = y = 2
         # we only have to check values up to the square root of the original n value.
         for i in range(1, math.floor(math.sqrt(n))):
-            xi = ((xi ** 2) + 1) % n
-            s = math.gcd((xi - xm), n)
+            x = ((x ** 2) + 1) % n
+            s = math.gcd((x - y), n)
             if s != 1 and s != n:
                 return s, n//s  # p, q
-            if self.integralPowerOf2(i):
-                xm = xi
+            if self.integral_power_of_2(i): # checks if the index is an integral power of 2
+                y = x 
 
     def get_private_key_from_p_q_e(self, p: int, q: int, e: int):
-        # d ≡ e−1 mod φ(N)
+        # d ≡ e^−1 mod φ(N)
         phi = (p-1) * (q-1)  # φ(N) = (p−1)∗(q−1)
         d = self.ext_euclid(e, phi) # use Extended Euclid's Algorithm to find the modular inverse.
         return d
@@ -306,9 +304,7 @@ class Project3:
         n = int(n_str, 16)
         e = int(e_str, 16)
 
-        # Step 1
         p, q = self.get_factors(n)
-        # Step 2
         d = self.get_private_key_from_p_q_e(p, q, e)
 
         return hex(d).rstrip('L')
