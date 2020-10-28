@@ -35,8 +35,8 @@ class TestProject3(unittest.TestCase):
         self.assertEqual(nonce, 656)
 
     def test_task_4(self):
-        d = self.project_3.task_4('0x71636398088bcdbd', '0x899317')
-        self.assertEqual(d, '0x394eec94ccc90de7')
+        d = self.project_3.task_4('0xcd6290ea76c25b9', '0x10001')
+        self.assertEqual(d, '0x15abb7c3f3f39ad')
 
     def test_task_5(self):
         public_key_list = [

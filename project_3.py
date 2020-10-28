@@ -18,36 +18,55 @@ class Project3:
                 return True
             pow2 = pow2*2
 
-    def modInverse(self, a, m):
-        a = a % m
-        for x in range(1, math.ceil(m)):
-            if ((a * x) % m == 1):
-                return x
-        return 1
+    def set_new_values_euclid(self, old, quotient, new): # for Extended Euclidean Algorithm
+        # Takes care of the assignments and the actual calculation for ext_euclid()
+        temp = new
+        new = old - quotient * temp
+        old = temp
+        return new, old
 
-    # def ext_euclid(self, e, n):
-       # https://crypto.stackexchange.com/questions/5889/calculating-rsa-private-exponent-when-given-public-exponent-and-the-modulus-fact
+    def ext_euclid(self, e, phi):
+        # Extended Euclidean Algorithm logic from: 
+        # https://crypto.stackexchange.com/questions/5889/calculating-rsa-private-exponent-when-given-public-exponent-and-the-modulus-fact
+        # Referenced pseudocode from: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+
+        original_phi = phi
+        old_remainder = e
+        remainder = phi
+        old_x = old_y = 1
+        x = y = 0
+
+        while remainder != 0:
+            quotient = old_remainder // remainder # floor division to retain integer
+
+            remainder, old_remainder = self.set_new_values_euclid(old_remainder, quotient, remainder)
+            x, old_x = self.set_new_values_euclid(old_x, quotient, x)
+            y, old_y = self.set_new_values_euclid(old_y, quotient, y)
+
+        # Negative value handling mentioned at: https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/
+        if (old_x < 0):
+            old_x = old_x + original_phi # if the value is negative, add the original phi value to restore to a positive number
+
+        return old_x # old_x = the modular inverse
 
     # END HELPER METHODS
 
     def get_factors(self, n: int):
-        # Brent's Factorization Method
-        # ref: http://connellybarnes.com/documents/factoring.pdf
+        # Brent's Factorization Method - Ref: http://connellybarnes.com/documents/factoring.pdf
         xi = xm = 2
         # we only have to check values up to the square root of the original n value.
         for i in range(1, math.floor(math.sqrt(n))):
-            xi = ((xi ** 2)+1) % n
+            xi = ((xi ** 2) + 1) % n
             s = math.gcd((xi - xm), n)
             if s != 1 and s != n:
-                return s, n/s  # p, q
+                return s, n//s  # p, q
             if self.integralPowerOf2(i):
                 xm = xi
 
     def get_private_key_from_p_q_e(self, p: int, q: int, e: int):
         # d ≡ e−1 mod φ(N)
         phi = (p-1) * (q-1)  # φ(N) = (p−1)∗(q−1)
-        d = 0
-       # d = self.ext_euclid(e, phi)
+        d = self.ext_euclid(e, phi) # use Extended Euclid's Algorithm to find the modular inverse.
         return d
 
     def task_1(self, n_str: str, d_str: str, c_str: str):
