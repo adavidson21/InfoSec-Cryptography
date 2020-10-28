@@ -3,48 +3,59 @@ import math
 import random
 # Do NOT alter the import list!!!!
 
+
 class Project3:
 
     def __init__(self):
         pass
 
     # BEGIN HELPER METHODS
- 
-    def integralPowerOf2(self, z:int): # for Brent's Factorization implementation 
+
+    def integralPowerOf2(self, z: int):  # for Brent's Factorization implementation
         pow2 = 1
         while pow2 <= z:
             if pow2 == z:
                 return True
             pow2 = pow2*2
+
+    def modInverse(self, a, m):
+        a = a % m
+        for x in range(1, math.ceil(m)):
+            if ((a * x) % m == 1):
+                return x
+        return 1
+
+    # def ext_euclid(self, e, n):
+       # https://crypto.stackexchange.com/questions/5889/calculating-rsa-private-exponent-when-given-public-exponent-and-the-modulus-fact
+
     # END HELPER METHODS
 
     def get_factors(self, n: int):
-        # Brent's Factorization Method ref: http://connellybarnes.com/documents/factoring.pdf
-        p = 0
-        q = 0
-        xi = 2
-        xm = 2
+        # Brent's Factorization Method
+        # ref: http://connellybarnes.com/documents/factoring.pdf
+        xi = xm = 2
+        # we only have to check values up to the square root of the original n value.
         for i in range(1, math.floor(math.sqrt(n))):
-            xi = ((xi ** 2)+1)% n
+            xi = ((xi ** 2)+1) % n
             s = math.gcd((xi - xm), n)
             if s != 1 and s != n:
-                p = s
-                q = n/s
-                return p,q
+                return s, n/s  # p, q
             if self.integralPowerOf2(i):
                 xm = xi
 
     def get_private_key_from_p_q_e(self, p: int, q: int, e: int):
-        # TODO: Implement this method for Task 4, Step 2
+        # d ≡ e−1 mod φ(N)
+        phi = (p-1) * (q-1)  # φ(N) = (p−1)∗(q−1)
         d = 0
-
+       # d = self.ext_euclid(e, phi)
         return d
 
     def task_1(self, n_str: str, d_str: str, c_str: str):
         n = int(n_str, 16)
         d = int(d_str, 16)
         c = int(c_str, 16)
-        m = pow(c, d, n)  # function: pow(base, exponent, modulus) ref: https://www.w3schools.com/python/ref_func_pow.asp
+        # function: pow(base, exponent, modulus) ref: https://www.w3schools.com/python/ref_func_pow.asp
+        m = pow(c, d, n)
         return hex(m).rstrip('L')
 
     def task_2(self, password_hash: str):
@@ -254,7 +265,8 @@ class Project3:
         # Check each password in the list until the hashed password from the list matches the passed password hash
         for x in range(len(common_password_list)):
             password = common_password_list[x]
-            hashed_password = hashlib.sha256(password.encode()).hexdigest()  # Gets the SHA256 hash
+            hashed_password = hashlib.sha256(
+                password.encode()).hexdigest()  # Gets the SHA256 hash
             if password_hash == hashed_password:
                 return password
 
@@ -276,12 +288,12 @@ class Project3:
         e = int(e_str, 16)
 
         # Step 1
-        p, q = self.get_factors(39)
+        p, q = self.get_factors(n)
         # Step 2
         d = self.get_private_key_from_p_q_e(p, q, e)
 
         return hex(d).rstrip('L')
- 
+
     def task_5(self, given_public_key_n: int, given_public_key_e: int, public_key_list: list):
         # TODO: Implement this method for Task 5
         d = 0

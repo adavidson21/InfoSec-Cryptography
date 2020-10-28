@@ -14,25 +14,29 @@ class TestProject3(unittest.TestCase):
                                   '0x7ee9127facd9381ceac3abcc4e5b6109eced930a683aa465e8b8dcc46b2b2ea78b3f4142d40a57cb6536700b04ebedc1817de38845b700c249def436c21da3538e56955f694ff02616138f05dde077cf6f18be27ad84ce4576e3e4c5691c0f6cb46f5519e007f0be70cec37fbec652b52c881c3a3d19e5857b92ba6e772442f')
         self.assertEqual(m, '0x74aeb7579d4061e3ba54f02b2eea47c1')
 
-    def test_task_2_1(self): # checking middle index of list
-        password = self.project_3.task_2('0bcf62b62f026b799d6245fc98591b58f6428db3a828303791f135360461d4ca')
+    def test_task_2_1(self):  # checking middle index of list
+        password = self.project_3.task_2(
+            '0bcf62b62f026b799d6245fc98591b58f6428db3a828303791f135360461d4ca')
         self.assertEqual(password, 'bryan')
-    
-    def test_task_2_2(self): # checking a first index of list
-        password = self.project_3.task_2('8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92')
+
+    def test_task_2_2(self):  # checking a first index of list
+        password = self.project_3.task_2(
+            '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92')
         self.assertEqual(password, '123456')
-        
-    def test_task_2_3(self): # checking last index of list
-        password = self.project_3.task_2('f1c6127b16ff422bfa09b98334abe44c5f88327e2a2185a2fe00ce26cdcf0075')
+
+    def test_task_2_3(self):  # checking last index of list
+        password = self.project_3.task_2(
+            'f1c6127b16ff422bfa09b98334abe44c5f88327e2a2185a2fe00ce26cdcf0075')
         self.assertEqual(password, 'cassandra')
 
     def test_task_3(self):
-        nonce = self.project_3.task_3('dolores', 'satoshi', 4590387, 'ad1a53f6aeacaafa9a66a7c33cb336c7c6a866467883960ad5731db2d6aeae8c')
+        nonce = self.project_3.task_3(
+            'dolores', 'satoshi', 4590387, 'ad1a53f6aeacaafa9a66a7c33cb336c7c6a866467883960ad5731db2d6aeae8c')
         self.assertEqual(nonce, 656)
 
     def test_task_4(self):
-        d = self.project_3.task_4('0xcd6290ea76c25b9', '0x10001')
-        self.assertEqual(d, '0x15abb7c3f3f39ad')
+        d = self.project_3.task_4('0x71636398088bcdbd', '0x899317')
+        self.assertEqual(d, '0x394eec94ccc90de7')
 
     def test_task_5(self):
         public_key_list = [
@@ -139,7 +143,7 @@ class TestProject3(unittest.TestCase):
         ]
 
         d = self.project_3.task_5(144965985551789672595298753480434206198100243703843869912732139769072770813192027176664780173715597401753521552885189279272665054124083640424760144394629798590902883058370807005114592169348977123961322905036962506399782515793487504942876237605818689905761084423626547637902556832944887103223814087385426838463,
-                                         65537, public_key_list)
+                                  65537, public_key_list)
         self.assertEqual(d, 74802245043332336819738742183008736301648777657397930159129389056116909388432714085680956881372970342479802834336610553689728155626808313902743699024874423336538299682452950217808789958403343592531615457200132930152958054550525183117023557696239548759739686054789111129430445374962073993156006641973866251561)
 
     def test_task_6(self):
@@ -149,7 +153,8 @@ class TestProject3(unittest.TestCase):
                                     '0x98a6999519c83bf76bc92ffb1926a0f4b82f1b0e64551cfe0f5105d7933541e2f99201efca6f22fe1f3a538511eb4123b897d603f0c327113f3f8d62672ee5c845c02e290007732eb9ebb9567185a8f8a2a83fe8144fcaffb678ab791f5cf98b57bd76ccd1b26347e5c163993f569b3bf66b3c6fd5fabf503e939aff851b0007',
                                     '0xa2e6fd084a7a44073a5601f492a7e2c718e03cab78735b239ef988eae4acbdc7f4cbc23a13f653c50d7950f9ba60675ee345ed400997bdc9dcf75cff9e1de4bc0de2345e66f58f7ea95db718eafc2b80f7641da266c6b7b49b67ddfb1abc7e4f53e384383a8490242bedb55f2aa237224acacc7160222ed16db52ea875f2e0b3',
                                     '0x56d43b9f91e6fcad96c25a577f55b35c5485a926bfdd8d42f9e8251cd5f904edce196318a4c93927e203819d2996223883c0a3686acd1c8fcf81771bc260a408f7f3c3fbf19a1f013f7c03bdb613eea23ce8ed347ff04174cd1b6ab790ac0c1f3559ab9100e6d9b88a1960157d8c4cb4a0df0f1fa69e9c24ad15c0b0e028244e')
-        self.assertEqual(msg, 'They are the egg men. I am the walrus. Goo goo g\'joob.')
+        self.assertEqual(
+            msg, 'They are the egg men. I am the walrus. Goo goo g\'joob.')
 
 
 if __name__ == '__main__':
