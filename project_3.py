@@ -53,7 +53,7 @@ class Project3:
         # Brent's Factorization Method - Ref: http://connellybarnes.com/documents/factoring.pdf
         x = y = 2
         # we only have to check values up to the square root of the original n value.
-        for i in range(1, math.floor(math.sqrt(n))):
+        for i in range(1, n):
             x = ((x ** 2) + 1) % n
             s = math.gcd((x - y), n)
             if s != 1 and s != n:
@@ -310,9 +310,9 @@ class Project3:
         return hex(d).rstrip('L')
 
     def task_5(self, given_public_key_n: int, given_public_key_e: int, public_key_list: list):
-        # TODO: Implement this method for Task 5
+        # Get unique private key from the given public key
         d = 0
-
+        print("n = ", given_public_key_n)
         return d
 
     def task_6(self, n_1_str: str, c_1_str: str, n_2_str: str, c_2_str: str, n_3_str: str, c_3_str: str):

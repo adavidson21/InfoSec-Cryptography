@@ -1,5 +1,4 @@
 import unittest
-
 import project_3
 
 
@@ -155,6 +154,7 @@ class TestProject3(unittest.TestCase):
                                     '0x56d43b9f91e6fcad96c25a577f55b35c5485a926bfdd8d42f9e8251cd5f904edce196318a4c93927e203819d2996223883c0a3686acd1c8fcf81771bc260a408f7f3c3fbf19a1f013f7c03bdb613eea23ce8ed347ff04174cd1b6ab790ac0c1f3559ab9100e6d9b88a1960157d8c4cb4a0df0f1fa69e9c24ad15c0b0e028244e')
         self.assertEqual(
             msg, 'They are the egg men. I am the walrus. Goo goo g\'joob.')
+
 
 
 if __name__ == '__main__':
