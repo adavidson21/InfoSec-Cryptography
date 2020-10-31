@@ -312,10 +312,10 @@ class Project3:
     def task_5(self, given_public_key_n: int, given_public_key_e: int, public_key_list: list):
         # Get unique private key from the given public key
         # check the list, see which key makes gcd(n,k) > 1
-        for i in range(len(public_key_list)):
-            if(math.gcd(given_public_key_n,public_key_list[i]) > 1):
-                q = math.gcd(given_public_key_n,public_key_list[i])
-                p = given_public_key_n//q
+        for i in range(len(public_key_list)): # check each item in the list
+            if(math.gcd(given_public_key_n,public_key_list[i]) > 1): # if GCD > 1, then there is a factor (same random prime)
+                p = math.gcd(given_public_key_n,public_key_list[i]) #GCD is one of the factors, p
+                q = given_public_key_n // p # find the other factor using integer precision (for accuracy)
 
         d = self.get_private_key_from_p_q_e(p, q, given_public_key_e)
         return d

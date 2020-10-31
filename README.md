@@ -133,6 +133,18 @@ Your goal is to get the unique private key from your given public key using only
 
 ### Solution:
 
+Using the function `get_private_key_from_p_q_e` from Task 4, the private key can be found.
+
+The function `task_5` works as follows:
+
+1. Iterate through the entire length of the provided list `public_key_list`.
+
+2. Test each value. If the GCD of the given `n` and the value in `public_key_list` has a GCD greater than 1, then we know that there is a factor that divides evenly into both.
+
+3. The value found in step 2 is assigned as the `p` value. We then divide that value into our original `n` in order to find the other factor, `q`, using integer division to preserve accuracy. 
+
+4. Then, the function `get_private_key_from_p_q_e` is used with `p`, `q`, and `given_public_key_e` as inputs in order to return our desired private key, `d`. 
+
 ## Task 6 - Broadcast RSA Attack
 
 ### Prompt:
