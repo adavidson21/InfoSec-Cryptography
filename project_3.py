@@ -311,8 +311,13 @@ class Project3:
 
     def task_5(self, given_public_key_n: int, given_public_key_e: int, public_key_list: list):
         # Get unique private key from the given public key
-        d = 0
-        print("n = ", given_public_key_n)
+        # check the list, see which key makes gcd(n,k) > 1
+        for i in range(len(public_key_list)):
+            if(math.gcd(given_public_key_n,public_key_list[i]) > 1):
+                q = math.gcd(given_public_key_n,public_key_list[i])
+                p = given_public_key_n//q
+
+        d = self.get_private_key_from_p_q_e(p, q, given_public_key_e)
         return d
 
     def task_6(self, n_1_str: str, c_1_str: str, n_2_str: str, c_2_str: str, n_3_str: str, c_3_str: str):
