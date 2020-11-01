@@ -22,30 +22,32 @@ class Project3:
         new = old - quotient * temp
         old = temp
         return new, old
-
+    
     def ext_euclid(self, e, phi):
-        # Extended Euclidean Algorithm logic from: 
-        # https://crypto.stackexchange.com/questions/5889/calculating-rsa-private-exponent-when-given-public-exponent-and-the-modulus-fact
-        # Referenced pseudocode from: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-        old_x = old_y = 1
-        x = y = 0
-        original_phi = remainder = phi
+        # Extended Euclid's Algorithm
+        # Pseudocode used from: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers
+        x = 0   
+        old_x = 1
+        original_phi = remainder = phi 
         old_remainder = e
-
-        while remainder != 0:
-            quotient = old_remainder // remainder # floor division to retain integer
+         
+        while remainder != 0: 
+            quotient = old_remainder // remainder 
             remainder, old_remainder = self.set_new_values_euclid(old_remainder, quotient, remainder)
             x, old_x = self.set_new_values_euclid(old_x, quotient, x)
-            y, old_y = self.set_new_values_euclid(old_y, quotient, y)
-
-        bezout_t = (old_x - old_y * e) // phi # gives the value needed for task 6
-
-        # Negative value handling mentioned at: https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/
-        if (old_x < 0):
-            old_x = old_x + original_phi # if the value is negative, add the original phi value to restore to a positive number
-        
-        return old_x, bezout_t  # old_x = the modular inverse
     
+        if phi != 0:
+            # ax + by = gcd(a,b)
+            bezout_y = (old_remainder - old_x * e ) // phi
+        else:
+            bezout_y = 0
+        
+        # if the value is negative, add the original phi value to restore to a positive number
+        if (old_x < 0):
+            old_x = old_x + original_phi 
+        
+        return old_x, bezout_y # old_remainder = modular inverse
+
     def find_root(self, power, n):
         # Using binary search to find the root of a number (for large numbers)
         # ref: https://www.geeksforgeeks.org/find-cubic-root-of-a-number/
@@ -62,7 +64,7 @@ class Project3:
     
     def find_crt(self, c_1, n_1, c_2, n_2, c_3, n_3):
         # Chinese Remainder Theorem
-        # ref: https://www.utc.edu/center-academic-excellence-cyber-defense/pdfs/course-paper-5600-rsa.pdf
+        # ref: https://en.wikipedia.org/wiki/Chinese_remainder_theorem#:~:text=In%20number%20theory%2C%20the%20Chinese,the%20divisors%20are%20pairwise%20coprime.
         # ref: https://www.youtube.com/watch?v=DKWnvyCsh9A
         # adding n and c values to list in order to iterate through them.
         c_vals = [c_1, c_2, c_3] 
@@ -78,9 +80,7 @@ class Project3:
             ex, bezout = self.ext_euclid(n_vals[i], y) # extended euclid to find the bezout value (ex is mod inv that we don't need.)
             ans += (c_vals[i] * bezout * y)
 
-        c = ans % product
-        return c
-
+        return ans % product
     # END HELPER METHODS
 
     def get_factors(self, n: int):
