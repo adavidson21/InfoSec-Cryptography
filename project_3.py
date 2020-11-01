@@ -3,7 +3,6 @@ import math
 import random
 # Do NOT alter the import list!!!!
 
-
 class Project3:
 
     def __init__(self):
@@ -28,12 +27,10 @@ class Project3:
         # Extended Euclidean Algorithm logic from: 
         # https://crypto.stackexchange.com/questions/5889/calculating-rsa-private-exponent-when-given-public-exponent-and-the-modulus-fact
         # Referenced pseudocode from: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-
         old_x = old_y = 1
         x = y = 0
-        original_phi = phi
+        original_phi = remainder = phi
         old_remainder = e
-        remainder = phi
 
         while remainder != 0:
             quotient = old_remainder // remainder # floor division to retain integer
@@ -41,11 +38,48 @@ class Project3:
             x, old_x = self.set_new_values_euclid(old_x, quotient, x)
             y, old_y = self.set_new_values_euclid(old_y, quotient, y)
 
+        bezout_t = (old_x - old_y * e) // phi # gives the value needed for task 6
+
         # Negative value handling mentioned at: https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/
         if (old_x < 0):
             old_x = old_x + original_phi # if the value is negative, add the original phi value to restore to a positive number
+        
+        return old_x, bezout_t  # old_x = the modular inverse
+    
+    def find_root(self, power, n):
+        # Using binary search to find the root of a number (for large numbers)
+        # ref: https://www.geeksforgeeks.org/find-cubic-root-of-a-number/
+        minimum = 0
+        maximum = n
+        while minimum < maximum:
+            middle = (minimum + maximum) // 2 # takes the middle value of the range
+            if pow(middle,power) < n: # if the number^power is smaller than n, then we can increment up to test
+                minimum = middle + 1
+            else: # if it's not, then that's the largest value (so far) that we can test. 
+                maximum = middle
+        return minimum
 
-        return old_x # old_x = the modular inverse
+    
+    def find_crt(self, c_1, n_1, c_2, n_2, c_3, n_3):
+        # Chinese Remainder Theorem
+        # ref: https://www.utc.edu/center-academic-excellence-cyber-defense/pdfs/course-paper-5600-rsa.pdf
+        # ref: https://www.youtube.com/watch?v=DKWnvyCsh9A
+        # adding n and c values to list in order to iterate through them.
+        c_vals = [c_1, c_2, c_3] 
+        n_vals = [n_1, n_2, n_3]
+        # initialization
+        ans = 0
+        product = 1
+        for x in range(len(c_vals)):
+            product *= n_vals[x] # the product of all given n values.
+            
+        for i in range(len(n_vals)):
+            y = product // n_vals[i]
+            ex, bezout = self.ext_euclid(n_vals[i], y) # extended euclid to find the bezout value (ex is mod inv that we don't need.)
+            ans += (c_vals[i] * bezout * y)
+
+        c = ans % product
+        return c
 
     # END HELPER METHODS
 
@@ -64,7 +98,7 @@ class Project3:
     def get_private_key_from_p_q_e(self, p: int, q: int, e: int):
         # d ≡ e^−1 mod φ(N)
         phi = (p-1) * (q-1)  # φ(N) = (p−1)∗(q−1)
-        d = self.ext_euclid(e, phi) # use Extended Euclid's Algorithm to find the modular inverse.
+        d, e = self.ext_euclid(e, phi) # use Extended Euclid's Algorithm to find the modular inverse.
         return d
 
     def task_1(self, n_str: str, d_str: str, c_str: str):
@@ -304,8 +338,8 @@ class Project3:
         n = int(n_str, 16)
         e = int(e_str, 16)
 
-        p, q = self.get_factors(n)
-        d = self.get_private_key_from_p_q_e(p, q, e)
+        p, q = self.get_factors(n)  # get the factors of the given n   
+        d = self.get_private_key_from_p_q_e(p, q, e) # use the factors and given e to calculate the private key
 
         return hex(d).rstrip('L')
 
@@ -321,18 +355,20 @@ class Project3:
         return d
 
     def task_6(self, n_1_str: str, c_1_str: str, n_2_str: str, c_2_str: str, n_3_str: str, c_3_str: str):
-        # TODO: Implement this method for Task 6
         n_1 = int(n_1_str, 16)
         c_1 = int(c_1_str, 16)
         n_2 = int(n_2_str, 16)
         c_2 = int(c_2_str, 16)
         n_3 = int(n_3_str, 16)
         c_3 = int(c_3_str, 16)
+       
+        # ref: https://www.utc.edu/center-academic-excellence-cyber-defense/pdfs/course-paper-5600-rsa.pdf
+        # ref: https://www.youtube.com/watch?v=DKWnvyCsh9A
 
-        msg = ''
-        m = 0
+        # Use Chinese Remainder Theroem to find c = m^3 mod(N1*N2*N3)
+        c = self.find_crt(c_1, n_1, c_2, n_2, c_3, n_3) 
+        m = int(self.find_root(3,c)) # c = m^3, therefore m = cubed root of c
 
         # Solve for m, which is an integer value, the line below will convert it to a string:
         msg = bytes.fromhex(hex(m).rstrip('L')[2:]).decode('UTF-8')
-
         return msg

@@ -97,9 +97,9 @@ Your goal is to get the private key.
 
 ### Solution
  
-At this point, we are given `p`, `q`, and `e`, and we are expected to find `d`, the private key.
+At this point, we are given `n` and `e`, and we are expected to find `d`, the private key.
 
-We can find `φ(N)` because `φ(N) = (p−1)∗(q−1)`, and from there the formula to find `d` is  `d = e^-1 mod φ(N)`. Therefore, we need to find the modular inverse.
+We can find `φ(N)` because `φ(N) = (p−1)∗(q−1)`, and from there the formula to find `d` is  `d = e^-1 mod φ(N)`. Therefore, we need to find the factors of `n`, and then use that to find the modular inverse of `n` and `e`.
 
 The modular inverse can be found using the **Extended Euclidean Algorithm**, which has pseudocode referenced [here](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm).
 
