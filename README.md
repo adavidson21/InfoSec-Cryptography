@@ -154,3 +154,13 @@ A message was encrypted with three different 1,024-bit RSA public keys, resultin
 You are given the three pairs of public keys and associated encrypted messages. Your job is to recover the original message.
 
 ### Solution:
+
+The function `task_6` works as follows:
+
+1. The Chinese Remainder Theorem is used to find the value of c. Within `find_crt`, the Chinese Remainder Theorem uses the Extended Euclidean Algorithm in order to find the value of `bezout`.
+
+`bezout` is then used in the equation `c_vals[i] * bezout * quotient`, which is computed for each `c_` value, and then summed. After, the sum is then used to find the value of `c` we are looking for by computing `ans % product`.
+
+2. Once we have our value of `c`, we need to take the cubed root of `c` in order to get m (from the equation `c = m^3`). The cubed root is taken using a custom function `find_root` that utilized binary sort, due to the large numbers used in RSA.
+
+3. The value of `m` returned from the `find_root` function is then converted and decoded in order to return the decrypted message. 
