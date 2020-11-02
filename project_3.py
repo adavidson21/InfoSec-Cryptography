@@ -9,7 +9,9 @@ class Project3:
         pass
 
     # BEGIN HELPER METHODS
-    def integral_power_of_2(self, z: int):  # for Brent's Factorization implementation
+    def integral_power_of_2(self, z: int):  
+        # For Brent's Factorization implementation
+        # Pseudocode from: http://connellybarnes.com/documents/factoring.pdf
         power = 1
         while power <= z:
             if power == z:
@@ -18,6 +20,7 @@ class Project3:
 
     def set_new_values_euclid(self, old, quotient, new): # for Extended Euclidean Algorithm
         # Takes care of the assignments and the actual calculation for ext_euclid()
+        # holds the current values in order to correctly calulate a-b*c  
         temp = new
         new = old - quotient * temp
         old = temp
@@ -25,7 +28,7 @@ class Project3:
     
     def ext_euclid(self, e, phi):
         # Extended Euclid's Algorithm
-        # Pseudocode used from: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers
+        # Pseudocode used from: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
         x = 0   
         old_x = 1
         original_phi = remainder = phi 
@@ -33,6 +36,7 @@ class Project3:
          
         while remainder != 0: 
             quotient = old_remainder // remainder 
+            # Values are calculated outside of the function to retain assignments for calculations
             remainder, old_remainder = self.set_new_values_euclid(old_remainder, quotient, remainder)
             x, old_x = self.set_new_values_euclid(old_x, quotient, x)
     
@@ -69,16 +73,16 @@ class Project3:
         # adding n and c values to list in order to iterate through them.
         c_vals = [c_1, c_2, c_3] 
         n_vals = [n_1, n_2, n_3]
-        # initialization
         ans = 0
         product = 1
+
         for x in range(len(c_vals)):
             product *= n_vals[x] # the product of all given n values.
             
         for i in range(len(n_vals)):
-            y = product // n_vals[i]
-            ex, bezout = self.ext_euclid(n_vals[i], y) # extended euclid to find the bezout value (ex is mod inv that we don't need.)
-            ans += (c_vals[i] * bezout * y)
+            quotient = product // n_vals[i]
+            ex, bezout = self.ext_euclid(n_vals[i], quotient) # extended euclid to find the bezout value (ex is mod inv that we don't need.)
+            ans += (c_vals[i] * bezout * quotient)
 
         return ans % product
     # END HELPER METHODS
@@ -325,13 +329,11 @@ class Project3:
         nonce = 0  # initializing the nonce as 0, to be incremented.
         end_hash = user_id_1 + ":" + user_id_2 + ":" + str(
             amount) + prev_block_hash  # the static end of the string to be hashed
-        hash = hashlib.sha256((str(
-            nonce) + end_hash).encode()).hexdigest()  # initializes the hash with nonce = 0 + transaction string + previous block hash
+        hash = hashlib.sha256((str(nonce) + end_hash).encode()).hexdigest()  # initializes the hash with nonce = 0 + transaction string + previous block hash
 
         while hash[:2] != "00":  # if the proof of work is not 00, then we have not found the nonce value
             nonce += 1
-            hash = hashlib.sha256(
-                (str(nonce) + end_hash).encode()).hexdigest()  # recalculate the hash with the new nonce value
+            hash = hashlib.sha256((str(nonce) + end_hash).encode()).hexdigest()  # recalculate the hash with the new nonce value
         return nonce  # if we get here, the lowest possible nonce value has been found
 
     def task_4(self, n_str: str, e_str: str):
@@ -367,7 +369,7 @@ class Project3:
 
         # Use Chinese Remainder Theroem to find c = m^3 mod(N1*N2*N3)
         c = self.find_crt(c_1, n_1, c_2, n_2, c_3, n_3) 
-        m = int(self.find_root(3,c)) # c = m^3, therefore m = cubed root of c
+        m = self.find_root(3, c) # c = m^3, therefore m = cubed root of c
 
         # Solve for m, which is an integer value, the line below will convert it to a string:
         msg = bytes.fromhex(hex(m).rstrip('L')[2:]).decode('UTF-8')
